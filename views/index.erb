@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TOSH.IO</title>
+
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    
+  </head>
+  <body>
+    <div class="container">
+      <h1>TOSH.IO</h1>
+      <form role="form" method="POST">
+        <div class="form-group">
+          <label for="url-to-shortner">Url</label>
+          <input type="text" class="form-control" id="url-to-shortner" placeholder="Url to shortner" name="original_url">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+
+      <% if(@url) %>
+        <div>Original: <%= @url.original %></div>
+        <div>Shortned: <a href="<%= @url.shorten %>"><%= @url.shorten %></a></div>
+      <% end %>
+    </div>
+  </body>
+</html>
+
+
+
