@@ -47,9 +47,6 @@ get '/' do
 end
 
 get '/:url_key' do
-  puts "#####"
-  puts Url.get_url(params[:url_key])
-  puts "#####"
   redirect Url.get_url(params[:url_key])
 end
 
