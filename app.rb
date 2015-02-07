@@ -21,7 +21,8 @@ class Url
     twitter: "https://twitter.com/marciotoshio",
     facebook: "https://www.facebook.com/marciotoshio",
     linkedin: "http://br.linkedin.com/in/marciotoshio/",
-    youtube: "http://www.youtube.com/user/marciotoshioide"
+    youtube: "http://www.youtube.com/user/marciotoshioide",
+    github: "https://github.com/marciotoshio/"
   }
 
   def self.get_url(key)
