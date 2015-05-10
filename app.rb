@@ -2,8 +2,8 @@ require 'sinatra'
 require 'data_mapper'
 
 configure :development do
-   DataMapper.setup(:default, "sqlite://#{File.expand_path('../db/development.db', __FILE__)}")
-   set :host, 'localhost:4567'
+  DataMapper.setup(:default, "sqlite://#{File.expand_path('../db/development.db', __FILE__)}")
+  set :host, 'localhost:4567'
 end
 
 configure :production do
@@ -14,7 +14,7 @@ end
 class Url
   include DataMapper::Resource
   property :id, Serial
-  property :original, String
+  property :original, String, :length => 500
   property :created_at, DateTime
 
   @my_urls = {
@@ -48,6 +48,8 @@ get '/' do
 end
 
 get '/:url_key' do
+
+  puts 'url key: ' + params[:url_key]
   redirect Url.get_url(params[:url_key])
 end
 
