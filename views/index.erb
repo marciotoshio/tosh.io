@@ -8,24 +8,56 @@
 
     <!-- Bootstrap -->
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <style>
+      body {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      .result {
+        text-align: center;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .shortened a {
+        color: #FF6A00;
+        font-weight: bold;
+        font-size: 18px;
+      }
+
+      .original a {
+        color: #000000;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
       <h1>TOSH.IO</h1>
-      <form role="form" method="POST">
-        <div class="form-group">
-          <label for="url-to-shortner">Url</label>
-          <input type="text" class="form-control" id="url-to-shortner" placeholder="Url to shortner" name="original_url">
+      
+      <form role="form" method="POST" class="form-horizontal">
+        <div class="form-group form-group-lg">
+          <label class="sr-only" for="url-to-shorten">Url</label>
+          <div class="input-group">
+            <div class="input-group-addon">Url</div>
+            <input type="text" class="form-control" id="url-to-shorten" placeholder="Url to shorten" name="original_url">
+          </div>
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn btn-primary">Shorten</button>
       </form>
-
+      
+      <div class="result">
       <% if(@url) %>
-        <div>Original: <%= @url.original %></div>
-        <div>Shortned: <a href="<%= @url.shorten %>"><%= @url.shorten %></a></div>
+        <div class="shortened"><a href="<%= @url.shorten %>"><%= @url.shorten %></a></div>
+        <div class="original"><a href="<%= @url.original %>"><%= @url.original %></a></div>
       <% end %>
+      </div>
     </div>
   </body>
 </html>

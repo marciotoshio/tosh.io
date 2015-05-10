@@ -2,12 +2,12 @@ require 'sinatra'
 require 'data_mapper'
 
 configure :development do
-   DataMapper.setup(:default, 'sqlite:///Users/tosha/Projects/tosh.io/db/development.db')
-   set :host, 'localhost:3000'
+   DataMapper.setup(:default, "sqlite://#{File.expand_path('../db/development.db', __FILE__)}")
+   set :host, 'localhost:4567'
 end
 
 configure :production do
-  DataMapper.setup(:default, 'sqlite:///var/www/tosh.io/db/production.db')
+  DataMapper.setup(:default, "sqlite://#{File.expand_path('../db/production.db', __FILE__)}")
   set :host, 'tosh.io'
 end
 
