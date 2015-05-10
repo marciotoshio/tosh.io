@@ -7,7 +7,7 @@ configure :development do
 end
 
 configure :production do
-  DataMapper.setup(:default, "sqlite://#{File.expand_path('../../db/production.db', __FILE__)}")
+  DataMapper.setup(:default, "sqlite://#{File.expand_path('../../../db/production.db', __FILE__)}")
   set :host, 'tosh.io'
 end
 
