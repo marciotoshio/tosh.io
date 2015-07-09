@@ -1,7 +1,7 @@
 require 'sinatra'
 require 'data_mapper'
 
-error_logger = ::File.new(::File.join(::File.dirname(::File.expand_path(__FILE__)),'..','log','error.log'),"a+")
+error_logger = ::File.new(::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','error.log'),"a+")
 error_logger.sync = true
 
 configure :development do
