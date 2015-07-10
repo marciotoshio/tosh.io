@@ -1,6 +1,9 @@
 require 'sinatra'
 require 'data_mapper'
 
+error_logger = ::File.new(::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','error.log'),"a+")
+error_logger.sync = true
+
 configure :development do
   DataMapper.setup(:default, "sqlite://#{File.expand_path('../db/development.db', __FILE__)}")
   set :host, 'localhost:4567'
@@ -42,6 +45,8 @@ DataMapper.finalize
 # automatically create the url table
 Url.auto_upgrade!
 
+
+before { env["rack.errors"] =  error_logger }
 
 get '/' do
   erb :index
