@@ -34,10 +34,6 @@ set :deploy_to, '/var/www/tosh.io'
 # Default value for keep_releases is 5
 set :keep_releases, 2
 
-#rvm
-set :rvm_type, :system
-set :rvm_ruby_version, 'ruby-2.2.1@tosh.io'
-
 namespace :deploy do
 
   after :restart, :clear_cache do
