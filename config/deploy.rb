@@ -34,15 +34,10 @@ set :deploy_to, '/var/www/tosh.io'
 # Default value for keep_releases is 5
 set :keep_releases, 2
 
+#rvm
+set :rvm_type, :system
+set :rvm_ruby_version, 'ruby-2.2.1@tosh.io'
+
 namespace :deploy do
-
-  after :restart, :clear_cache do
-    on roles(:web), in: :groups, limit: 3, wait: 10 do
-      # Here we can do anything such as:
-      # within release_path do
-      #   execute :rake, 'cache:clear'
-      # end
-    end
-  end
-
+  after :'passenger:restart'
 end
