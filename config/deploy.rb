@@ -38,9 +38,6 @@ set :keep_releases, 2
 set :rvm_type, :user
 set :rvm_ruby_version, 'ruby-2.2.1@tosh.io'
 
-#passenger
-set :passenger_restart_with_sudo, true
-
 namespace :deploy do
 	after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
@@ -50,5 +47,4 @@ namespace :deploy do
       # end
     end
   end
-  after :'passenger:restart'
 end
