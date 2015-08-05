@@ -35,8 +35,11 @@ set :deploy_to, '/var/www/tosh.io'
 set :keep_releases, 2
 
 #rvm
-set :rvm_type, :system
+set :rvm_type, :user
 set :rvm_ruby_version, 'ruby-2.2.1@tosh.io'
+
+#passenger
+set :passenger_restart_with_sudo, true
 
 namespace :deploy do
   after :'passenger:restart'
