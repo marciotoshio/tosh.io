@@ -1,5 +1,3 @@
-lock '3.4.0'
-
 set :application, 'tosh.io'
 set :repo_url, 'git@github.com:marciotoshio/tosh.io.git'
 set :deploy_to, '/var/www/tosh.io'
