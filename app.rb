@@ -29,7 +29,8 @@ class Url
     facebook: 'https://www.facebook.com/marciotoshio',
     linkedin: 'http://br.linkedin.com/in/marciotoshio/',
     youtube: 'http://www.youtube.com/user/marciotoshioide',
-    github: 'https://github.com/marciotoshio/'
+    github: 'https://github.com/marciotoshio/',
+    resume: 'https://docs.google.com/document/d/1APzK326NfXpNDTbhMEs5e1eBvau4yZrrDBNDH9fBo_s'
   }
 
   def self.get_url(key)
