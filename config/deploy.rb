@@ -3,7 +3,7 @@ set :repo_url, 'git@github.com:marciotoshio/tosh.io.git'
 set :deploy_to, '/var/www/tosh.io'
 set :keep_releases, 2
 set :rvm_type, :user
-set :rvm_ruby_version, 'ruby-2.2.1@tosh.io'
+set :rvm_ruby_version, 'ruby-2.7.2@tosh.io'
 set :puma_threads,    [4, 16]
 set :puma_workers,    0
 

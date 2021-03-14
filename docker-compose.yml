@@ -1,0 +1,17 @@
+version: '2'
+services:
+  bundle:
+    image: busybox
+    volumes:
+      - /bundle
+  web:
+    build: .
+    command: rackup --host 0.0.0.0
+    volumes:
+      - .:/myapp
+    volumes_from:
+      - bundle
+    ports:
+      - "9292:9292"
+    stdin_open: true
+    tty: true

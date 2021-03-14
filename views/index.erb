@@ -5,25 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
     <title>TOSH.IO</title>
 
-    <!-- Bootstrap -->
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <style>
       body {
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      }
-
-      h1 {
         text-align: center;
       }
 
-      .result {
-        text-align: center;
+      form {
+        margin-top: 50px;
       }
 
       .btn {
+        margin-top: 20px;
         width: 100%;
       }
 
@@ -36,23 +33,25 @@
       .original a {
         color: #000000;
       }
+
+      .not-found {
+        color: #ff0000;
+      }
     </style>
   </head>
   <body>
-    <div class="container">
+    <div class="container-fluid">
       <h1>TOSH.IO</h1>
-      
-      <form role="form" method="POST" class="form-horizontal">
-        <div class="form-group form-group-lg">
-          <label class="sr-only" for="url-to-shorten">Url</label>
-          <div class="input-group">
-            <div class="input-group-addon">Url</div>
-            <input type="text" class="form-control" id="url-to-shorten" placeholder="Url to shorten" name="original_url">
-          </div>
-        </div>
+
+      <% if(@not_found) %>
+        <div class="not-found"><h2>NOT FOUND!</h2></div>
+      <% end %>
+
+      <form role="form" method="POST">
+        <input type="url" class="form-control" id="url-to-shorten" placeholder="Url to shorten" name="original_url">
         <button type="submit" class="btn btn-primary">Shorten</button>
       </form>
-      
+
       <div class="result">
       <% if(@url) %>
         <div class="shortened"><a href="<%= @url.shorten %>"><%= @url.shorten %></a></div>

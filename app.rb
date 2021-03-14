@@ -1,54 +1,49 @@
 require 'sinatra'
-require 'data_mapper'
+require 'sequel'
 
 current_dir = ::File.dirname(::File.expand_path(__FILE__))
 error_logger = ::File.new(::File.join(current_dir, 'log', 'error.log'), 'a+')
 error_logger.sync = true
 
 configure :development do
-  DataMapper.setup(:default, 'sqlite::memory:')
+  set :db_path, File.expand_path('../db/development.db', __FILE__)
   set :host, 'localhost:9292'
 end
 
 configure :production do
-  db_path = File.expand_path('../../../db/production.db', __FILE__)
-  db_url = "sqlite://#{db_path}"
-  DataMapper.setup(:default, db_url)
+  set :db_path, File.expand_path('../../../db/production.db', __FILE__)
   set :host, 'tosh.io'
 end
 
-# Manages urls
-class Url
-  include DataMapper::Resource
-  property :id, Serial
-  property :original, String, length: 500
-  property :created_at, DateTime
+DB = Sequel.connect("sqlite://#{Sinatra::Application.settings.db_path}")
+DB.create_table? :urls do
+  primary_key :id
+  String :original, size: 500
+  DateTime :created_at
+end
 
-  @my_urls = {
+# Manages urls
+class Url < Sequel::Model
+  BASE_36 = 36
+  MY_URLS = {
     twitter: 'https://twitter.com/marciotoshio',
     facebook: 'https://www.facebook.com/marciotoshio',
     linkedin: 'http://br.linkedin.com/in/marciotoshio/',
     youtube: 'http://www.youtube.com/user/marciotoshioide',
     github: 'https://github.com/marciotoshio/',
+    instagram: 'https://instagram.com/marciotoshioide',
     resume: 'https://docs.google.com/document/d/1APzK326NfXpNDTbhMEs5e1eBvau4yZrrDBNDH9fBo_s'
   }
 
   def self.get_url(key)
-    return @my_urls[key.to_sym] if @my_urls.key?(key.to_sym)
-    get(key.to_i(36)).original
+    return MY_URLS[key.to_sym] if MY_URLS.key?(key.to_sym)
+    find(id: key.to_i(BASE_36))
   end
 
   def shorten
-    "http://#{Sinatra::Application.settings.host}/#{id.to_s(36)}"
+    "https://#{Sinatra::Application.settings.host}/#{id.to_s(BASE_36)}"
   end
 end
-
-# Perform basic sanity checks and initialize all relationships
-# Call this when you've defined all your models
-DataMapper.finalize
-
-# automatically create the url table
-Url.auto_upgrade!
 
 before { env['rack.errors'] = error_logger }
 
@@ -57,13 +52,19 @@ get '/' do
 end
 
 get '/:url_key' do
-  puts 'url key: ' + params[:url_key]
-  redirect Url.get_url(params[:url_key])
+  url = Url.get_url(params[:url_key])
+  unless url.nil?
+    redirect url.original
+  else
+    status 404
+    @not_found = true
+    erb :index
+  end
 end
 
 post '/' do
   uri = URI.parse(params[:original_url])
   raise 'Invalid URL' unless (uri.is_a? URI::HTTP) || (uri.is_a? URI::HTTPS)
-  @url = Url.first_or_create(original: uri.to_s)
+  @url = Url.find_or_create(original: uri.to_s)
   erb :index
 end
