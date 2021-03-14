@@ -1,4 +1,5 @@
 set :application, 'tosh.io'
+set :user, 'web'
 set :repo_url, 'git@github.com:marciotoshio/tosh.io.git'
 set :deploy_to, '/var/www/tosh.io'
 set :keep_releases, 2

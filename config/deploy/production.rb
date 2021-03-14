@@ -1,1 +1,1 @@
-server '162.243.28.142', user: 'web', roles: %w(app web)
+server '162.243.28.142', user: fetch(:user), roles: %w(app web)
