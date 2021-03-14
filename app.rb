@@ -36,8 +36,7 @@ class Url < Sequel::Model
   }
 
   def self.get_url(key)
-    return MY_URLS[key.to_sym] if MY_URLS.key?(key.to_sym)
-    find(id: key.to_i(BASE_36))
+    MY_URLS.key?(key.to_sym) ? new(original: MY_URLS[key.to_sym]) : find(id: key.to_i(BASE_36))
   end
 
   def shorten
