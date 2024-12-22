@@ -1,17 +1,17 @@
 require 'sinatra'
 require 'sequel'
 
-current_dir = ::File.dirname(::File.expand_path(__FILE__))
-error_logger = ::File.new(::File.join(current_dir, 'log', 'error.log'), 'a+')
+current_dir = File.dirname(File.expand_path(__FILE__))
+error_logger = File.new(File.join(current_dir, 'log', 'error.log'), 'a+')
 error_logger.sync = true
 
 configure :development do
-  set :db_path, File.expand_path('../db/development.db', __FILE__)
+  set :db_path, File.expand_path('db/development.db', __dir__)
   set :host, 'localhost:9292'
 end
 
 configure :production do
-  set :db_path, File.expand_path('../../../db/production.db', __FILE__)
+  set :db_path, File.expand_path('db/production.db', __dir__)
   set :host, 'tosh.io'
 end
 

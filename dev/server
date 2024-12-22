@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker run --rm -v .:/usr/src/app -p 9292:9292 tosh.io_dev

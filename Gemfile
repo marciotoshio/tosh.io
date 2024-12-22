@@ -1,15 +1,12 @@
 source 'https://rubygems.org'
-ruby '2.7.2'
+ruby '3.3.6'
 
 gem 'puma'
+gem 'rackup'
 gem 'sequel'
 gem 'sinatra'
-gem 'sqlite3'
+gem 'sqlite3', '~> 1.5', force_ruby_platform: true
 
 group :development do
   gem 'byebug'
-  gem 'capistrano', require: false
-  gem 'capistrano-bundler', require: false
-  gem 'capistrano-rvm', require: false
-  gem 'capistrano3-puma', require: false
 end
