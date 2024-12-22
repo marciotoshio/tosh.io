@@ -46,6 +46,10 @@ end
 
 before { env['rack.errors'] = error_logger }
 
+get '/up' do
+  'OK'
+end
+
 get '/' do
   erb :index
 end
