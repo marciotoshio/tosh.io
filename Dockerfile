@@ -35,4 +35,4 @@ RUN groupadd --system --gid 1000 app && \
 USER 1000:1000
 
 EXPOSE 9292
-CMD ["bundle", "exec", "rackup", "--host", "0.0.0.0"]
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
