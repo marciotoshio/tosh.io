@@ -19,7 +19,7 @@ jobs:
         run: |
           cd $GITEA_WORKSPACE
           echo "🔨 Building image..."
-          podman build \
+          docker build \
             -t ${IMAGE_NAME}:latest \
             -t ${IMAGE_NAME}:${COMMIT_SHA} \
             .
@@ -27,14 +27,14 @@ jobs:
       - name: Tag for registry
         run: |
           echo "🧩 Tagging images for registry..."
-          podman tag ${IMAGE_NAME}:latest ${REGISTRY_HOST}/${IMAGE_NAME}:latest
-          podman tag ${IMAGE_NAME}:${COMMIT_SHA} ${REGISTRY_HOST}/${IMAGE_NAME}:${COMMIT_SHA}
+          docker tag ${IMAGE_NAME}:latest ${REGISTRY_HOST}/${IMAGE_NAME}:latest
+          docker tag ${IMAGE_NAME}:${COMMIT_SHA} ${REGISTRY_HOST}/${IMAGE_NAME}:${COMMIT_SHA}
 
       - name: Push to registry
         run: |
           echo "📤 Pushing images..."
-          podman push ${REGISTRY_HOST}/${IMAGE_NAME}:latest
-          podman push ${REGISTRY_HOST}/${IMAGE_NAME}:${COMMIT_SHA}
+          docker push ${REGISTRY_HOST}/${IMAGE_NAME}:latest
+          docker push ${REGISTRY_HOST}/${IMAGE_NAME}:${COMMIT_SHA}
           echo "✅ Done! Images pushed:"
           echo "   - ${REGISTRY_HOST}/${IMAGE_NAME}:latest"
           echo "   - ${REGISTRY_HOST}/${IMAGE_NAME}:${COMMIT_SHA}"
@@ -43,7 +43,7 @@ jobs:
         run: |
           echo "♻ Refreshing container..."
           cd $HOME/projects/homelab
-          podman pull ${REGISTRY_HOST}/${IMAGE_NAME}:latest
+          docker pull ${REGISTRY_HOST}/${IMAGE_NAME}:latest
           systemctl --user daemon-reload
           systemctl --user restart tosh_io.service
           echo "🚀 Service restarted!"
