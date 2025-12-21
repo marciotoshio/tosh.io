@@ -1,22 +1,49 @@
-name: Deploy tosh.io
-run-name: Deploy tosh.io by ${{ gitea.actor }}
+name: Build and Deploy tosh.io
+run-name: Deploy by ${{ gitea.actor }} - ${{ gitea.sha }}
 on:
   push:
     branches:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "The job was automatically triggered by a ${{ gitea.event_name }} event."
-      - run: echo "This job is now running on a ${{ runner.os }} server hosted by Gitea!"
-      - run: echo "The name of your branch is ${{ gitea.ref }} and your repository is ${{ gitea.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v4
-      - run: echo "The ${{ gitea.repository }} repository has been cloned to the runner."
-      - run: echo "The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
+      - name: Get repository name
         run: |
-          ls ${{ gitea.workspace }}
-      - run: echo "This job's status is ${{ job.status }}."
+          echo "IMAGE_NAME=$(basename ${{ gitea.repository }})" >> $GITHUB_ENV
+          echo "REGISTRY_HOST=homelab:5000" >> $GITHUB_ENV
+          echo "COMMIT_SHA=$(echo ${{ gitea.sha }} | cut -c1-7)" >> $GITHUB_ENV
+
+      - name: Build image
+        run: |
+          cd $GITEA_WORKSPACE
+          echo "🔨 Building image..."
+          podman build \
+            -t ${IMAGE_NAME}:latest \
+            -t ${IMAGE_NAME}:${COMMIT_SHA} \
+            .
+
+      - name: Tag for registry
+        run: |
+          echo "🧩 Tagging images for registry..."
+          podman tag ${IMAGE_NAME}:latest ${REGISTRY_HOST}/${IMAGE_NAME}:latest
+          podman tag ${IMAGE_NAME}:${COMMIT_SHA} ${REGISTRY_HOST}/${IMAGE_NAME}:${COMMIT_SHA}
+
+      - name: Push to registry
+        run: |
+          echo "📤 Pushing images..."
+          podman push ${REGISTRY_HOST}/${IMAGE_NAME}:latest
+          podman push ${REGISTRY_HOST}/${IMAGE_NAME}:${COMMIT_SHA}
+          echo "✅ Done! Images pushed:"
+          echo "   - ${REGISTRY_HOST}/${IMAGE_NAME}:latest"
+          echo "   - ${REGISTRY_HOST}/${IMAGE_NAME}:${COMMIT_SHA}"
+
+      - name: Restart service
+        run: |
+          echo "♻ Refreshing container..."
+          cd $HOME/projects/homelab
+          podman pull ${REGISTRY_HOST}/${IMAGE_NAME}:latest
+          systemctl --user daemon-reload
+          systemctl --user restart tosh_io.service
+          echo "🚀 Service restarted!"
