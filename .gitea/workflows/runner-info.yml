@@ -1,0 +1,26 @@
+name: Runner Info
+run-name: Runner Info by ${{ gitea.actor }} - ${{ gitea.sha }}
+on:
+  push:
+    branches:
+      - main
+jobs:
+  runner-info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check user and environment
+        run: |
+          echo "=== User Info ==="
+          whoami
+          id
+          echo ""
+          echo "=== Environment ==="
+          pwd
+          echo "HOME: $HOME"
+          echo "USER: $USER"
+          echo ""
+          echo "=== Docker Check ==="
+          docker --version || echo "Docker not found"
+          echo ""
+          echo "=== Workspace ==="
+          ls -la
