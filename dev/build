@@ -1,3 +1,4 @@
 #!/bin/bash
 
-docker build -t tosh.io_dev -f ./Dockerfile.dev .
+RUNNER=$(command -v podman || command -v docker)
+$RUNNER build -t $(basename $(pwd))_dev -f ./Dockerfile.dev .

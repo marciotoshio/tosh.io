@@ -1,3 +1,4 @@
 #!/bin/bash
 
-docker run --rm -v .:/usr/src/app tosh.io_dev bundle $@
+RUNNER=$(command -v podman || command -v docker)
+$RUNNER run --rm -v .:/usr/src/app:z $(basename $(pwd))_dev bundle $@

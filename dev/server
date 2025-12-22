@@ -1,3 +1,4 @@
 #!/bin/bash
 
-docker run --rm -v .:/usr/src/app -p 9292:9292 tosh.io_dev
+RUNNER=$(command -v podman || command -v docker)
+$RUNNER run -it --env-file ./.env.dev -v .:/usr/src/app:z --rm -p 9292:9292 $(basename $(pwd))_dev

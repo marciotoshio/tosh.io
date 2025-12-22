@@ -2,3 +2,5 @@
 *.orig
 *.log
 *.db
+.env
+.env.dev

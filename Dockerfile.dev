@@ -1,12 +1,12 @@
 # syntax=docker/dockerfile:1
 # check=error=true
 
-ARG RUBY_VERSION=3.3.6
+ARG RUBY_VERSION=3.4
 FROM docker.io/library/ruby:$RUBY_VERSION-alpine AS base
 
 WORKDIR /usr/src/app
 
-RUN apk update && apk upgrade && apk add --update build-base alpine-sdk sqlite-dev shadow
+RUN apk update && apk upgrade && apk add --update build-base alpine-sdk sqlite-dev shadow bash
 
 # Set production environment
 ENV RACK_ENV="development" \
@@ -25,12 +25,6 @@ FROM base
 # Copy built artifacts: gems, application
 COPY --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
 COPY --from=build /usr/src/app /usr/src/app
-
-# Run and own only the runtime files as a non-root user for security
-RUN groupadd --system --gid 1000 app && \
-    useradd app --uid 1000 --gid 1000 --create-home --shell /bin/sh && \
-    chown -R app:app db log tmp
-USER 1000:1000
 
 EXPOSE 9292
 CMD ["bundle", "exec", "rackup", "--host", "0.0.0.0"]

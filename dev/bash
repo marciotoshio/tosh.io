@@ -1,0 +1,4 @@
+#!/bin/bash
+
+RUNNER=$(command -v podman || command -v docker)
+$RUNNER run --rm -it --env-file ./.env.dev -v .:/usr/src/app:z $(basename $(pwd))_dev bash   

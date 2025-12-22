@@ -1,12 +1,12 @@
 # syntax=docker/dockerfile:1
 # check=error=true
 
-ARG RUBY_VERSION=3.3.6
+ARG RUBY_VERSION=3.4
 FROM docker.io/library/ruby:$RUBY_VERSION-alpine AS base
 
 WORKDIR /usr/src/app
 
-RUN apk update && apk upgrade && apk add --update build-base alpine-sdk sqlite-dev shadow
+RUN apk update && apk upgrade && apk add --update build-base alpine-sdk sqlite-dev shadow bash
 
 # Set production environment
 ENV RACK_ENV="production" \
