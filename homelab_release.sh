@@ -31,4 +31,5 @@ echo "♻ Refreshing container..."
 ssh homelab.local "podman pull ${REGISTRY_HOST}/${IMAGE_NAME}:latest"
 ssh homelab.local "systemctl --user daemon-reload"
 ssh homelab.local "systemctl --user restart tosh_io.service"
+ssh homelab.local "podman image prune -f"
 
